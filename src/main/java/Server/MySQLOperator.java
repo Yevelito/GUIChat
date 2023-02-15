@@ -1,3 +1,5 @@
+package Server;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -30,6 +32,7 @@ public class MySQLOperator {
                 + "username varchar(255) NOT NULL,"
                 + "email varchar(255) NOT NULL,"
                 + "password varchar(255) NOT NULL,"
+                + "isOnline BIT NULL,"
                 + "PRIMARY KEY (id));");
     }
 
@@ -47,8 +50,10 @@ public class MySQLOperator {
     }
 
     public void AddUser(String username, String password, String email) throws SQLException {
-        this.stmt.execute("INSERT INTO users (username, email, password) VALUES ('"
-                + username + "','" + email + "','" + password + "');");
+        if (!checkIfUserExist(username)){
+            this.stmt.execute("INSERT INTO users (username, email, password, isOnline) VALUES ('"
+                    + username + "','" + email + "','" + password + "',1);");
+        }
     }
 
 //    public void DeleteLineById(Integer id) throws SQLException {

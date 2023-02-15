@@ -1,7 +1,13 @@
-abstract class Command {
+package Commands;
+
+public abstract class Command {
     String shortname;
 
     public Command() {
+    }
+
+    public String getShortname() {
+        return shortname;
     }
 
     public abstract void action(String msg, ClientObject clientObject);

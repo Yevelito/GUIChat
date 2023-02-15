@@ -1,3 +1,8 @@
+package Commands;
+
+import Server.ClientHandler;
+import Server.Handlers;
+
 import java.sql.SQLException;
 import java.time.Instant;
 
@@ -12,15 +17,15 @@ public class Broadcast extends Command{
     @Override
     public void action(String msg, ClientObject clientObject) {
         try {
-            for (ClientHandler h: this.handlers.getHandlers()) {
-                if (!h.getUsername().equals(clientObject.username)) {
-                    h.msgToClient(clientObject.username + "==>" + msg);
-                }
+            for (ClientHandler h: this.handlers.getHandlers().values()) {
+                h.msgToClient(clientObject.getUsername() + " ==> " + msg);
             }
             String time = String.valueOf(Instant.now().getEpochSecond());
-            clientObject.mysql.AddMessage(clientObject.username, msg, time);
+            clientObject.getMysqlConnection().AddMessage(clientObject.getUsername(), msg, time);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
+            e.printStackTrace();
+//            throw new RuntimeException(e);
         }
 
     }

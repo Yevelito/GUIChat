@@ -1,3 +1,5 @@
+package Commands;
+
 import com.sendemail.EmailSender;
 
 import java.sql.SQLException;
@@ -11,8 +13,8 @@ public class Email extends Command {
     @Override
     public void action(String msg, ClientObject clientObject) {
         try {
-            new EmailSender().sendEmail(msg, clientObject.mysql.getPasswordByLoginAndEmail(clientObject.username, msg));
-            System.out.println("Email sent");
+            new EmailSender().sendEmail(msg, clientObject.getMysqlConnection().getPasswordByLoginAndEmail(clientObject.getUsername(), msg));
+            System.out.println("Commands.Email sent");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
