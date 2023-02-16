@@ -49,10 +49,10 @@ public class ClientMain {
                 throw new RuntimeException(e);
             }
         };
-        System.out.println("DEBUG: closing auth window");
+
         this.authorizationFrame.dispose();
+        this.mainChatFrame.setTitle("Chat client for '" + this.client.getUsername() + "' is on-line");
         this.mainChatFrame.setVisible(true);
-        System.out.println("DEBUG: main frame window has been open");
     }
 }
 

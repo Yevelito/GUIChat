@@ -43,6 +43,8 @@ public class Server {
                 thread.start();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }

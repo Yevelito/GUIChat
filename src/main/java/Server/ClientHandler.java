@@ -20,7 +20,7 @@ public class ClientHandler implements Runnable {
 
     private String threadName = ""; // name for server debug printing
 
-    public ClientHandler(Socket socket, MySQLOperator sql) {
+    public ClientHandler(Socket socket, MySQLOperator sql) throws SQLException {
         try {
             this.mySQLOperator = sql;
             this.socket = socket;
@@ -48,13 +48,6 @@ public class ClientHandler implements Runnable {
             try {
                 msgFromClient = bufferedReader.readLine();
                 System.out.println(threadName + "DEBUG: msg from client: " + msgFromClient);
-
-                //send it back for debug.
-                msgToClient("Message: " + msgFromClient);
-                msgToClient("name: " + this.clientObject.getUsername());
-                msgToClient("auth: " + this.clientObject.isAuthorized());
-                msgToClient("online: " + this.clientObject.isOnline());
-
                 purposeAction(msgFromClient);
 
                 if (this.clientObject.isAuthorized()) {
@@ -63,6 +56,7 @@ public class ClientHandler implements Runnable {
                     msgToClient("SERVER: authorization successful");
                     commandsLibrary.commands.get("b").action("Hi, everyone! Happy join to the chat", this.clientObject);
                     this.handlers.addHandler(this.clientObject.getUsername(), this);
+                    this.clientObject.getMysqlConnection().setOnlineStatus(this.clientObject.getUsername(), true);
                     printAllMessages();
                 }
 
@@ -71,7 +65,13 @@ public class ClientHandler implements Runnable {
                 System.out.println("-------");
                 e.printStackTrace();
                 System.out.println("-------");
-                closeEverything(socket, bufferedReader, bufferedWriter);
+                try {
+                    closeEverything(socket, bufferedReader, bufferedWriter);
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
+                }
             }
         }
 
@@ -83,7 +83,13 @@ public class ClientHandler implements Runnable {
             } catch (Exception e) {
                 System.out.println(e);
                 e.printStackTrace();
-                closeEverything(socket, bufferedReader, bufferedWriter);
+                try {
+                    closeEverything(socket, bufferedReader, bufferedWriter);
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                    ex.printStackTrace();
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
@@ -132,13 +138,14 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void removeClientHandler() {
+    public void removeClientHandler() throws SQLException {
         commandsLibrary.commands.get("b").action(" Bye, everyone! I left the chat.", this.clientObject);
         this.clientObject.setOnline(false);
+        this.clientObject.getMysqlConnection().setOnlineStatus(this.clientObject.getUsername(), false);
         handlers.removeHandler(this);
     }
 
-    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
+    public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) throws SQLException {
         removeClientHandler();
         try {
             if (bufferedReader != null) {

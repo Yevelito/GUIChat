@@ -91,18 +91,6 @@ public class Client {
                     }
                 }
 
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        while (socket.isConnected()) {
-//                            try {
-//                                Thread.sleep(1000);
-//                            } catch (InterruptedException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                        }
-//                    }
-//                }).start();
 
 
                 while (socket.isConnected()) {
@@ -112,13 +100,10 @@ public class Client {
                             System.out.println("DEBUG: message from server(auth):\n" + messageFromHandler);
                             if ((messageFromHandler.startsWith("a:")) & (!messageFromHandler.equals("a:"))) {
                                 String[] users = messageFromHandler.split(":")[1].split("\\|");
-                                for (int i = 0; i < users.length; i++) {
-                                    System.out.println(users[i]);
-                                }
                                 mcf.refreshOnlineUsers(users);
                             } else {
                                 if (messageFromHandler.equals("a:")) {
-                                    addOutputLine("only you in chat");
+                                    addOutputLine("Only you in chat");
                                 } else {
                                     addOutputLine(messageFromHandler);
                                 }

@@ -1,8 +1,6 @@
 package Frames;
 
 import Client.Client;
-import Server.ClientHandler;
-import Server.CommandsLibrary;
 import Server.Handlers;
 
 import javax.swing.*;
@@ -11,7 +9,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class MainChatFrame extends JFrame {
     private final Handlers handlers;

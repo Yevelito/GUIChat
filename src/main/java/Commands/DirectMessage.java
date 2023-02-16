@@ -20,10 +20,13 @@ public class DirectMessage extends Command {
         String[] txt = msg.split("@");
         System.out.println(txt[0]);
         System.out.println(txt[1]);
-        ClientHandler handler = this.handlers.getHandlers().get(txt[0]);
+        ClientHandler receiver = this.handlers.getHandlers().get(txt[0]);
+        ClientHandler sender = this.handlers.getHandlers().get(clientObject.getUsername());
 
-        if (handler.getClientObject().isOnline()) {
-            handler.msgToClient("Direct message from '" + clientObject.getUsername() + "': " + txt[1]);
+        if (receiver.getClientObject().isOnline()) {
+            receiver.msgToClient("Direct message from '" + clientObject.getUsername() + "': " + txt[1]);
+            sender.msgToClient("Direct message to '" + txt[0] + "': " + txt[1]);
+
         }
     }
 }
