@@ -11,21 +11,25 @@ public class Password extends Command {
 
     @Override
     public void action(String password, ClientObject clientObject) {
-
-        boolean passwordOK = false;
         try {
-            // check if password is the same as in DB
-            passwordOK = clientObject.getMysqlConnection().checkIfPasswordAndLoginCorrect(clientObject.getUsername(), password);
+            if (!clientObject.getMysqlConnection().getOnlineStatus(clientObject.getUsername())) {
+                try {
+                    // check if password is the same as in DB
+                    boolean passwordOK = clientObject.getMysqlConnection().checkIfPasswordAndLoginCorrect(clientObject.getUsername(), password);
+                    if (passwordOK && !clientObject.isAuthorized()) {
+                        clientObject.setAuthorized(true);
+                    }
+                } catch (SQLException e) {
+                    System.out.println(e);
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+
+            }
         } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
-
-        if (passwordOK && !clientObject.isAuthorized()) {
-            clientObject.setAuthorized(true);
-        }
-//        else {
-//            throw new Exception("VSE PLOHO!");
-//        }
-
     }
 }

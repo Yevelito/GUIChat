@@ -2,6 +2,7 @@ package Server;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MySQLOperator {
     Statement stmt;
@@ -57,7 +58,8 @@ public class MySQLOperator {
     }
 
     public void setOnlineStatus(String username, boolean status) throws SQLException {
-        if (!checkIfUserExist(username)) {
+        if (checkIfUserExist(username)) {
+            System.out.println("DEBUG FROM MYSQL: setOnlineStatus: " + status);
             if (status) {
                 this.stmt.execute("UPDATE `users` SET isOnline=1 WHERE username='" + username + "';");
             }else {
@@ -65,6 +67,21 @@ public class MySQLOperator {
             }
         }
 
+    }
+
+    public boolean getOnlineStatus(String username) throws SQLException {
+        ResultSet rs = null;
+        boolean status = false;
+        if (checkIfUserExist(username)){
+            rs = this.stmt.executeQuery("SELECT isOnline FROM `users` WHERE username='" + username + "';");
+            if (rs.next()) {
+                System.out.println("DEBUG FROM MYSQL: getOnlineStatus: " + rs.getString("isOnline"));
+                if (rs.getString("isOnline").equals("1")){
+                    status = true;
+                }
+            }
+        }
+        return status;
     }
 
 //    public void DeleteLineById(Integer id) throws SQLException {
@@ -97,6 +114,7 @@ public class MySQLOperator {
         while (rs.next()) {
             n++;
         }
+        System.out.println("DEBUG FROM MYSQL: checkIfUserExist: " + n);
         return n > 0;
     }
 
@@ -109,6 +127,7 @@ public class MySQLOperator {
                 n++;
             }
         }
+        System.out.println("DEBUG FROM MYSQL: checkIfPasswordAndLoginCorrect: " + n);
         return n > 0;
     }
 
