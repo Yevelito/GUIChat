@@ -6,6 +6,10 @@ import Frames.MainChatFrame;
 import java.io.IOException;
 import java.net.Socket;
 
+/**
+ * ClientMain Class.
+ * This class manage switch between authorizationFrame and mainChatFrame.
+ */
 public class ClientMain {
     private Socket serverSocket;
     private Client client;
@@ -13,6 +17,10 @@ public class ClientMain {
     private AuthorizationFrame authorizationFrame;
     private MainChatFrame mainChatFrame;
 
+
+    /**
+     * Create socket, client, authorizationFrame and mainChatFrame (mainChatFrame not visible).
+     */
     public ClientMain() {
         try {
             String serverHost = ClientConfig.getInstance().data.get("serverAddress");
@@ -31,24 +39,22 @@ public class ClientMain {
             System.out.println(
                     "ERROR: Cant connect to the server. Exiting.\nDetails: \n" +
                             e.getMessage());
-//            e.printStackTrace();
+            e.printStackTrace();
             System.exit(-1);
         }
-
-
     }
 
 
     public void start() {
         System.out.println("INFO: waiting for authorization...");
-        while (!this.client.isAuth())
-        {
+        while (!this.client.isAuth()) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        };
+        }
+        ;
 
         this.authorizationFrame.dispose();
         this.mainChatFrame.setTitle("Chat client for '" + this.client.getUsername() + "' is on-line");

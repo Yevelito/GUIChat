@@ -5,7 +5,12 @@ import Frames.MainChatFrame;
 import java.io.*;
 import java.net.Socket;
 
-
+/**
+ * Client class. User side of app.
+ * Receive and send messages from/to server via bufferReader and bufferWriter.
+ * Connection made via socket.
+ * Contains GUI mainChatFrame.
+ */
 public class Client {
     private Socket socket;
     private BufferedWriter bufferedWriter;
@@ -14,6 +19,11 @@ public class Client {
     private boolean auth;
     private MainChatFrame mcf;
 
+    /**
+     * Client constructor.
+     * Receive socket, and create BufferedReader and BufferedWriter based on I/O streams.
+     * @param s - socket
+     */
     public Client(Socket s) {
         try {
             this.socket = s;
@@ -28,12 +38,21 @@ public class Client {
         }
     }
 
-
+    /**
+     * Set username to the client instance.
+     * Set username to the clientHandler by SetClientHandlerUsername command (shortname: "u").
+     * @param username - username to set.
+     */
     public void setUsername(String username) {
         this.username = username;
         sendMessageForm("u:" + this.username);
     }
 
+
+    /**
+     * Add line to chatOutputFrame in mainChatFrame.
+     * @param msg - message to add.
+     */
     public void addOutputLine(String msg) {
         if (this.mcf != null) {
             this.mcf.addOutputLine(msg);
@@ -59,6 +78,10 @@ public class Client {
         return this.auth;
     }
 
+    /**
+     * Send message to client handler.
+     * @param msgToSend - message to send
+     */
     public void sendMessageForm(String msgToSend) {
         try {
             bufferedWriter.write(msgToSend);
@@ -69,12 +92,17 @@ public class Client {
         }
     }
 
-
+    /**
+     * listen message from client handler
+     */
     public void listenerForMessage() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 String messageFromHandler;
+                /**
+                 * authorization
+                 */
                 while (!isAuth()) {
                     try {
                         messageFromHandler = bufferedReader.readLine();
@@ -91,13 +119,19 @@ public class Client {
                     }
                 }
 
-
-
+                /**
+                 * receiving messages
+                 */
                 while (socket.isConnected()) {
                     try {
                         if (isAuth()) {
                             messageFromHandler = bufferedReader.readLine();
                             System.out.println("DEBUG: message from server(auth):\n" + messageFromHandler);
+
+                            /**
+                             * Check if message says to show online users,
+                             * and add line to chatOutputFrame in mainChatFrame if it's not.
+                             */
                             if ((messageFromHandler.startsWith("a:")) & (!messageFromHandler.equals("a:"))) {
                                 String[] users = messageFromHandler.split(":")[1].split("\\|");
                                 mcf.refreshOnlineUsers(users);
@@ -120,6 +154,13 @@ public class Client {
 
     }
 
+
+    /**
+     * Close all connections.
+     * @param socket
+     * @param bufferedWriter
+     * @param bufferedReader
+     */
     public void closeEverything(Socket socket, BufferedWriter bufferedWriter, BufferedReader bufferedReader) {
         try {
             if (bufferedReader != null) {
