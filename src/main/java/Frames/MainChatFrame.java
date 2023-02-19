@@ -10,6 +10,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Main chat frame.
+ * Created with java form.
+ * Contains:
+ *      inputPanel - text input area with send button.
+ *      usersPanel - list of online users with option to send direct message when click on username).
+ *      ChatPanel - area with chat message history.
+ */
 public class MainChatFrame extends JFrame {
     private final Handlers handlers;
     private JTextArea inputArea;
@@ -26,6 +34,11 @@ public class MainChatFrame extends JFrame {
     private final Client client;
 
 
+    /**
+     * Receive client.
+     * Create 'Handlers' instance (list of all connected clientHandlers) and model for online users list.
+     * @param c client
+     */
     public MainChatFrame(Client c) {
         this.client = c;
         this.handlers = Handlers.getInstance();
@@ -42,11 +55,10 @@ public class MainChatFrame extends JFrame {
         this.setContentPane(this.ChatMainPane);
 
 
-
+        /**
+         * Send message to the client, and clear inputArea
+         */
         sentButton.addActionListener(new ActionListener() {
-            /*
-            send message button
-             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 client.sendMessageForm(inputArea.getText());
@@ -55,10 +67,10 @@ public class MainChatFrame extends JFrame {
         });
 
 
+        /**
+         * Refresh online users list by sending ShowAllUsers command ("a:1").
+         */
         uplOnline.addActionListener(new ActionListener() {
-            /*
-            refresh users button
-             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Main frame: required user list update");
@@ -66,6 +78,9 @@ public class MainChatFrame extends JFrame {
             }
         });
 
+        /**
+         * Set start of direct message command ("d:username@") when click on username from list of online users
+         */
         usersList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -75,6 +90,10 @@ public class MainChatFrame extends JFrame {
     }
 
 
+    /**
+     * Receive online users set, and put it to the model.
+     * @param users set of online users
+     */
     public void refreshOnlineUsers(String[] users) {
         model.clear();
 

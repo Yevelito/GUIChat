@@ -1,18 +1,17 @@
 package Frames;
 
 import Client.Client;
-import Server.MySQLOperator;
-import com.sendemail.EmailSender;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.Socket;
-import java.sql.SQLException;
 
-
+/**
+ * Authorization frame.
+ * Contains 3 option: login, recovery password by email, registration.
+ */
 public class AuthorizationFrame extends JFrame implements ActionListener {
     private JButton loginButton;
     private JButton registrationButton;
@@ -27,9 +26,14 @@ public class AuthorizationFrame extends JFrame implements ActionListener {
     private JTextField emailRegField;
     private Client client;
 
-    public AuthorizationFrame(Client client) throws IOException {
+    /**
+     * Contains 3 panels:
+     * loginPanel (consist of usernameLogField, passwordLogField, loginButton, emailRecoverField, emailRecoverButton)
+     * registrationPanel (consist of usernameRegField, passwordRegField, emailRegField and registrationButton)
+     * @param client user client
+     */
+    public AuthorizationFrame(Client client){
         this.client = client;
-
 
         this.usernameLogField = new JTextField();
         this.usernameLogField.setPreferredSize(new Dimension(245, 40));
@@ -128,6 +132,23 @@ public class AuthorizationFrame extends JFrame implements ActionListener {
     }
 
 
+    /**
+     * 3 options of user choice:
+     *      loginButton:
+     *              1 - check if text in fields is not default.
+     *              2 - set username to clientHandler by SetClientHandlerUsername command (shortname "u").
+     *              3 - check if login and password are correct by Password command (shortname "p").
+     *
+     *      registrationButton:
+     *              1 - check if text in fields is not default.
+     *              2 - append username, password and email to one string with "|" symbol.
+     *              3 - send AddUser command (shortname "c") to clientHandler
+     *
+     *      emailRecoverButton:
+     *              1 - check if text in fields is not default.
+     *              2 - send Email command (shortname "e") for password recovery via gmail
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
