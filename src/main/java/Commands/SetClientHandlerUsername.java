@@ -1,5 +1,8 @@
 package Commands;
 
+/**
+ * Set clientHandler username command.
+ */
 public class SetClientHandlerUsername extends Command{
 
     public SetClientHandlerUsername() {

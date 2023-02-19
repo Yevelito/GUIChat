@@ -44,7 +44,10 @@ public class ClientMain {
         }
     }
 
-
+    /**
+     * Wait for authorization by user, and then it's done dispose authorization frame,
+     * set username to mainChatFrame and make mainChatFrame visible.
+     */
     public void start() {
         System.out.println("INFO: waiting for authorization...");
         while (!this.client.isAuth()) {

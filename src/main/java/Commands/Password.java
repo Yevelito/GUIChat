@@ -2,29 +2,29 @@ package Commands;
 
 import java.sql.SQLException;
 
+/**
+ * Password check command.
+ */
 public class Password extends Command {
 
     public Password() {
         this.shortname = "p";
     }
 
-
+    /**
+     * Check if received password is equal for password in 'users' table (DB),
+     * and change authorization status to true in clientObject if it's ok.
+     * @param password     password to check.
+     * @param clientObject contains: DB connection, username, online and authorization statuses of clientHandler.
+     */
     @Override
     public void action(String password, ClientObject clientObject) {
         try {
             if (!clientObject.getMysqlConnection().getOnlineStatus(clientObject.getUsername())) {
-                try {
-                    // check if password is the same as in DB
-                    boolean passwordOK = clientObject.getMysqlConnection().checkIfPasswordAndLoginCorrect(clientObject.getUsername(), password);
-                    if (passwordOK && !clientObject.isAuthorized()) {
-                        clientObject.setAuthorized(true);
-                    }
-                } catch (SQLException e) {
-                    System.out.println(e);
-                    e.printStackTrace();
-                    throw new RuntimeException(e);
+                boolean passwordOK = clientObject.getMysqlConnection().checkIfPasswordAndLoginCorrect(clientObject.getUsername(), password);
+                if (passwordOK && !clientObject.isAuthorized()) {
+                    clientObject.setAuthorized(true);
                 }
-
             }
         } catch (SQLException e) {
             System.out.println(e);

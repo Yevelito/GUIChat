@@ -5,6 +5,11 @@ import Server.Handlers;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Config class.
+ * Contains serverAddress and serverPort in hashMap data type.
+ * Based on singleton pattern.
+ */
 public class ClientConfig {
 
     public Map<String, String > data;

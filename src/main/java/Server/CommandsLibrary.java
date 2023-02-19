@@ -16,7 +16,6 @@ public class CommandsLibrary {
         this.commands.put(new Email().getShortname(), new Email());
         this.commands.put(new Broadcast().getShortname(), new Broadcast());
         this.commands.put(new ShowAllUsers().getShortname(), new ShowAllUsers());
-        this.commands.put(new Help().getShortname(), new Help());
         this.commands.put(new DirectMessage().getShortname(), new DirectMessage());
         this.commands.put(new SetClientHandlerUsername().getShortname(), new SetClientHandlerUsername());
         this.commands.put(new AddUser().getShortname(), new AddUser());

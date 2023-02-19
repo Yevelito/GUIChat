@@ -5,15 +5,24 @@ import Server.Handlers;
 
 import java.util.Set;
 
+/**
+ * Direct message command.
+ * Send message straight to needed user, without write this message to 'message' table (DB).
+ */
 public class DirectMessage extends Command {
     Handlers handlers;
 
     public DirectMessage() {
-//        super();gin executions to the default lifecycle
         this.shortname = "d";
         this.handlers = Handlers.getInstance();
     }
 
+    /**
+     * Split received message with "@" to get receivers username and text of message.
+     * Send message to receiver and sender clients.
+     * @param msg message received from client.
+     * @param clientObject contains: DB connection, username, online and authorization statuses of clientHandler.
+     */
     @Override
     public void action(String msg, ClientObject clientObject) {
         System.out.println(msg);

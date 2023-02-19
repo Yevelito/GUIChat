@@ -120,7 +120,7 @@ public class Client {
                 }
 
                 /**
-                 * receiving messages
+                 * receiving messages from clientHandler
                  */
                 while (socket.isConnected()) {
                     try {
@@ -129,7 +129,7 @@ public class Client {
                             System.out.println("DEBUG: message from server(auth):\n" + messageFromHandler);
 
                             /**
-                             * Check if message says to show online users,
+                             * Check if received message says to show online users,
                              * and add line to chatOutputFrame in mainChatFrame if it's not.
                              */
                             if ((messageFromHandler.startsWith("a:")) & (!messageFromHandler.equals("a:"))) {
