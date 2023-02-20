@@ -68,7 +68,6 @@ public class ClientHandler implements Runnable {
      *          and broadcast message to the chat about it.
      *          Add this ClientHandler to Handlers list.
      *          Set online status "1" in 'users' table (DB).
-     *
      *  2 - CHAT RUNNING:
      *          receive messages from Client till "isOnline" status in clientObject is true
      */
