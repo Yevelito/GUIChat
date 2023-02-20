@@ -20,6 +20,7 @@ public class ClientMain {
 
     /**
      * Create socket, client, authorizationFrame and mainChatFrame (mainChatFrame not visible).
+     * Data for socket connection come from ClientConfig object.
      */
     public ClientMain() {
         try {

@@ -1,19 +1,23 @@
 package Server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Handler;
 
+/**
+ * All authorized ClientHandlers.
+ * Have HashMap structure.
+ * Based on Singleton pattern.
+ */
 public class Handlers {
     private static Handlers instance = null;
     private HashMap<String, ClientHandler> handlers = null;
-    Handlers(){
+
+    Handlers() {
         this.handlers = new HashMap<String, ClientHandler>();
     }
 
 
     public static Handlers getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Handlers();
         }
 

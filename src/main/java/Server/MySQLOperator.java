@@ -2,8 +2,11 @@ package Server;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
+/**
+ * MySQL operator.
+ * Responsible for all MySQL operations.
+ */
 public class MySQLOperator {
     Statement stmt;
     String SERVERHOST;
@@ -12,6 +15,9 @@ public class MySQLOperator {
     Connection con;
     int id;
 
+    /**
+     * Connection to localhost chat database 'chat_base'.
+     */
     public MySQLOperator() {
         this.SERVERHOST = "jdbc:mysql://localhost:3306/chat_base";
         this.USER = "root";
@@ -28,6 +34,16 @@ public class MySQLOperator {
         }
     }
 
+    /**
+     * Create 'users' table with columns:
+     * ID - (int) - user id, auto increment - can't be empty,
+     * USERNAME - (varchar 255) - username - can't be empty,
+     * EMAIL - (varchar 255) - email - can't be empty,
+     * PASSWORD - (varchar 255) - password - can't be empty,
+     * ISONLINE - (bit) - 0 as default
+     * Primary key is ID.
+     * @throws SQLException exception
+     */
     public void CreateTableUsers() throws SQLException {
         this.stmt.execute("create table users (" + "id int NOT NULL AUTO_INCREMENT,"
                 + "username varchar(255) NOT NULL,"
@@ -37,6 +53,15 @@ public class MySQLOperator {
                 + "PRIMARY KEY (id));");
     }
 
+    /**
+     * Create table 'messages' with columns:
+     * ID - (int) - user id, auto increment - can't be empty,
+     * USERNAME - (varchar 255) - username of sender - can't be empty,
+     * MESSAGE - (varchar 255) - text of message - can't be empty,
+     * TIME - (varchar 255) - unix epoch time - can't be empty.
+     * Primary key is ID.
+     * @throws SQLException exception
+     */
     public void CreateTableMessages() throws SQLException {
         this.stmt.execute("create table messages (" + "id int NOT NULL AUTO_INCREMENT,"
                 + "username varchar(255) NOT NULL,"
@@ -45,11 +70,25 @@ public class MySQLOperator {
                 + "PRIMARY KEY (id));");
     }
 
+    /**
+     * Add row to 'message' table (DB).
+     * @param username - username
+     * @param message  - message text
+     * @param time     - time when message was sent
+     * @throws SQLException
+     */
     public void AddMessage(String username, String message, String time) throws SQLException {
         this.stmt.execute("INSERT INTO messages (username, message, time) VALUES ('"
                 + username + "','" + message + "','" + time + "');");
     }
 
+    /**
+     * Add user to 'users' table (DB).
+     * @param username username
+     * @param password password
+     * @param email    email
+     * @throws SQLException
+     */
     public void AddUser(String username, String password, String email) throws SQLException {
         if (!checkIfUserExist(username)) {
             this.stmt.execute("INSERT INTO users (username, email, password, isOnline) VALUES ('"
@@ -59,10 +98,9 @@ public class MySQLOperator {
 
     public void setOnlineStatus(String username, boolean status) throws SQLException {
         if (checkIfUserExist(username)) {
-            System.out.println("DEBUG FROM MYSQL: setOnlineStatus: " + status);
             if (status) {
                 this.stmt.execute("UPDATE `users` SET isOnline=1 WHERE username='" + username + "';");
-            }else {
+            } else {
                 this.stmt.execute("UPDATE `users` SET isOnline=0 WHERE username='" + username + "';");
             }
         }
@@ -72,11 +110,10 @@ public class MySQLOperator {
     public boolean getOnlineStatus(String username) throws SQLException {
         ResultSet rs = null;
         boolean status = false;
-        if (checkIfUserExist(username)){
+        if (checkIfUserExist(username)) {
             rs = this.stmt.executeQuery("SELECT isOnline FROM `users` WHERE username='" + username + "';");
             if (rs.next()) {
-                System.out.println("DEBUG FROM MYSQL: getOnlineStatus: " + rs.getString("isOnline"));
-                if (rs.getString("isOnline").equals("1")){
+                if (rs.getString("isOnline").equals("1")) {
                     status = true;
                 }
             }
@@ -84,18 +121,6 @@ public class MySQLOperator {
         return status;
     }
 
-//    public void DeleteLineById(Integer id) throws SQLException {
-//        this.stmt.execute("delete from  users where id=" + id + ";");
-//    }
-
-//    public void ShowLines() throws SQLException {
-//        ResultSet rs = null;
-//        rs = this.stmt.executeQuery("select * from items");
-//
-//        while (rs.next()) {
-//            System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3));
-//        }
-//    }
 
     public void ConClose() throws SQLException {
         this.con.close();
@@ -114,20 +139,18 @@ public class MySQLOperator {
         while (rs.next()) {
             n++;
         }
-        System.out.println("DEBUG FROM MYSQL: checkIfUserExist: " + n);
         return n > 0;
     }
 
     public boolean checkIfPasswordAndLoginCorrect(String username, String password) throws SQLException {
         int n = 0;
-        if (checkIfUserExist(username)){
+        if (checkIfUserExist(username)) {
             ResultSet rs = null;
             rs = this.stmt.executeQuery("SELECT * FROM `users` WHERE username='" + username + "' and password='" + password + "';");
             while (rs.next()) {
                 n++;
             }
         }
-        System.out.println("DEBUG FROM MYSQL: checkIfPasswordAndLoginCorrect: " + n);
         return n > 0;
     }
 

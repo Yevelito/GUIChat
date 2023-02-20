@@ -7,6 +7,18 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Made when client have connection to te server.
+ * Responsible for all logic part of application.
+ * Contains:
+ *  Handlers list instance,
+ *  Commands list instance,
+ *  Socket
+ *  Buffer reader and writer
+ *  Username
+ *  MySQL operator instance
+ *  Client object
+ */
 public class ClientHandler implements Runnable {
     private Handlers handlers;
     private CommandsLibrary commandsLibrary;
@@ -16,10 +28,16 @@ public class ClientHandler implements Runnable {
     private String username;
     private MySQLOperator mySQLOperator;
     private ClientObject clientObject;
-
-
     private String threadName = ""; // name for server debug printing
 
+    /**
+     * Receive from server socket and MySQL operator.
+     * Create Buffered reader and writer based on socket connection.
+     * Get handlers list instance and CommandsLibrary instance.
+     * @param socket socket
+     * @param sql MySQL operator instance
+     * @throws SQLException
+     */
     public ClientHandler(Socket socket, MySQLOperator sql) throws SQLException {
         try {
             this.mySQLOperator = sql;
@@ -41,10 +59,26 @@ public class ClientHandler implements Runnable {
     }
 
 
+    /**
+     * Main logic of project.
+     * Consist of 2 steps:
+     *  1 - AUTHORIZATION:
+     *          wait till clientObject "isAuthorized" status will be true,
+     *          and when send "SERVER: authorization successful" message to the Client for their authorization,
+     *          and broadcast message to the chat about it.
+     *          Add this ClientHandler to Handlers list.
+     *          Set online status "1" in 'users' table (DB).
+     *
+     *  2 - CHAT RUNNING:
+     *          receive messages from Client till "isOnline" status in clientObject is true
+     */
     @Override
     public void run() {
         String msgFromClient = "";
         try {
+            /**
+             * AUTHORIZATION PART
+             */
             while (!this.clientObject.isAuthorized()) {
                 msgFromClient = bufferedReader.readLine();
                 System.out.println(threadName + "DEBUG: msg from client: " + msgFromClient);
@@ -74,6 +108,9 @@ public class ClientHandler implements Runnable {
 
         }
 
+        /**
+         * RUNNING CHAT PART
+         */
         try {
             while (this.clientObject.isOnline()) {
 
@@ -93,6 +130,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Split received message by ":" and check if it's specialized command (by command shortname) or broadcast message command.
+     * @param msgFromClient message received from Client
+     */
     public void purposeAction(String msgFromClient) {
         String[] msg = msgFromClient.split(":");
         if (msg.length > 1) {

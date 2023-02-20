@@ -16,7 +16,8 @@ public class Email extends Command {
 
     /**
      * Get password from table 'users' (DB), and send it via EmailSender.
-     * @param msg message to send
+     *
+     * @param msg          message to send
      * @param clientObject contains: DB connection, username, online and authorization statuses of clientHandler.
      */
     @Override

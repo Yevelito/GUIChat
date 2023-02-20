@@ -1,7 +1,5 @@
 package Client;
 
-import Server.Handlers;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +10,9 @@ import java.util.Map;
  */
 public class ClientConfig {
 
-    public Map<String, String > data;
+    public Map<String, String> data;
 
-    public ClientConfig(){
+    public ClientConfig() {
         data = new HashMap<>();
         data.put("serverAddress", "127.0.0.1");
         data.put("serverPort", "1234");
@@ -24,7 +22,7 @@ public class ClientConfig {
 
 
     public static ClientConfig getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ClientConfig();
         }
 

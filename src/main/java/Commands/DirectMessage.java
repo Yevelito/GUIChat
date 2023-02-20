@@ -3,8 +3,6 @@ package Commands;
 import Server.ClientHandler;
 import Server.Handlers;
 
-import java.util.Set;
-
 /**
  * Direct message command.
  * Send message straight to needed user, without write this message to 'message' table (DB).

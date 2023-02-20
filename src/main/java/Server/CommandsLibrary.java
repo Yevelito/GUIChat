@@ -4,6 +4,11 @@ import Commands.*;
 
 import java.util.HashMap;
 
+/**
+ * Library of all command types in project.
+ * Have HashMap structure.
+ * Based on Singleton pattern.
+ */
 public class CommandsLibrary {
 
     private static CommandsLibrary instance = null;

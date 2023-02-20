@@ -5,16 +5,23 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 
+/**
+ * Server.
+ * Connection made by port 1234.
+ * Contains: MySQL operator, socket and list of handlers.
+ */
 public class Server {
-
     private final int serverPort = 1234;
-
     ServerSocket serverSocket;
     MySQLOperator mySQLOperator;
     Handlers handlers;
 
 
-    public Server() throws SQLException {
+    /**
+     *Open connection socket, create MySQL operator, drop and create 'messages' table (DB), get Handlers list instance.
+     * If needed drop 'users' table (DB) too, it's possible if uncommit committed lines.
+     */
+    public Server() {
         System.out.println("INFO: Starting server on port: " + serverPort + " ...");
         try {
             this.serverSocket = new ServerSocket(serverPort);
@@ -23,14 +30,17 @@ public class Server {
             this.mySQLOperator = new MySQLOperator();
             this.mySQLOperator.DropTableMessages();
             this.mySQLOperator.CreateTableMessages();
+//          this.mySQLOperator.DropTableUsers();
+//          this.mySQLOperator.CreateTableUsers();
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
-//        this.mySQLOperator.DropTableUsers();
-//        this.mySQLOperator.CreateTableUsers();
 
     }
 
+    /**
+     * Wait for client connection to the server socket while socket is open, and open new ClientHandler when it's happen.
+     */
     public void startServer() {
         while (!serverSocket.isClosed()) {
             try {

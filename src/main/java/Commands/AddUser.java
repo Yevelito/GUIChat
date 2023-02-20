@@ -17,7 +17,6 @@ public class AddUser extends Command {
     @Override
     public void action(String msg, ClientObject clientObject) {
         try {
-//            add new user
             String[] user = msg.split("\\|");
             if (!clientObject.getMysqlConnection().checkIfUserExist(user[0])){
                 clientObject.getMysqlConnection().AddUser(user[0], user[1], user[2]);
