@@ -13,7 +13,7 @@ public class Broadcast extends Command{
     private Handlers handlers;
     public Broadcast() {
         super();
-        this.shortname = "b";
+        this.shortname = "broadcastMessage";
         this.handlers = Handlers.getInstance();
     }
 

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class Email extends Command {
     public Email() {
         super();
-        this.shortname = "e";
+        this.shortname = "recoveryPasswordViaEmail";
     }
 
     /**

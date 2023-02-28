@@ -1,6 +1,7 @@
 package Frames;
 
 import Client.Client;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -152,10 +153,12 @@ public class AuthorizationFrame extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        JSONObject msg = new JSONObject();
         if (e.getSource() == loginButton) {
             if (!this.usernameLogField.getText().equals("username") && !this.passwordLogField.getText().equals("password")) {
                 this.client.setUsername(this.usernameLogField.getText());
-                this.client.sendMessageForm("p:" + this.passwordLogField.getText());
+                msg.put("commandName", "passwordCheck");
+                msg.put("message", this.passwordLogField.getText());
             }
 
         } else if (e.getSource() == registrationButton) {
@@ -165,14 +168,18 @@ public class AuthorizationFrame extends JFrame implements ActionListener {
                 String reg = this.usernameRegField.getText() + "|" +
                         this.passwordRegField.getText() + "|" +
                         this.emailRegField.getText();
-                this.client.sendMessageForm("c:" + reg);
+                msg.put("commandName", "addNewUser");
+                msg.put("message", reg);
+                this.client.setUsername(this.usernameRegField.getText());
             }
 
         } else if (e.getSource() == emailRecoverButton) {
             if (!this.usernameLogField.getText().equals("username") && !this.emailRecoverField.getText().equals("email")) {
                 this.client.setUsername(this.usernameLogField.getText());
-                this.client.sendMessageForm("e:" + this.emailRecoverField.getText());
+                msg.put("commandName", "recoveryPasswordViaEmail");
+                msg.put("message", this.emailRecoverField.getText());
             }
         }
+        this.client.sendMessageForm(msg.toString());
     }
 }

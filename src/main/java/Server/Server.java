@@ -28,10 +28,10 @@ public class Server {
             this.handlers = Handlers.getInstance();
 
             this.mySQLOperator = new MySQLOperator();
-            this.mySQLOperator.DropTableMessages();
-            this.mySQLOperator.CreateTableMessages();
-//          this.mySQLOperator.DropTableUsers();
-//          this.mySQLOperator.CreateTableUsers();
+//            this.mySQLOperator.DropTableMessages();
+//            this.mySQLOperator.CreateTableMessages();
+          this.mySQLOperator.DropTableUsers();
+          this.mySQLOperator.CreateTableUsers();
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }

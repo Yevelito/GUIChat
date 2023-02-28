@@ -2,6 +2,8 @@ package Frames;
 
 import Client.Client;
 import Server.Handlers;
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -61,7 +63,10 @@ public class MainChatFrame extends JFrame {
         sentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.sendMessageForm(inputArea.getText());
+                JSONObject msg = new JSONObject();
+                msg.put("commandName", "broadcastMessage");
+                msg.put("message", inputArea.getText());
+                client.sendMessageForm(msg.toString());
                 inputArea.setText("");
             }
         });
@@ -73,8 +78,11 @@ public class MainChatFrame extends JFrame {
         uplOnline.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Main frame: required user list update");
-                client.sendMessageForm("a:1");
+                System.out.println("DEBUG: Main frame: required user list update");
+                JSONObject msg = new JSONObject();
+                msg.put("commandName", "showOnlineUsers");
+                msg.put("message", "");
+                client.sendMessageForm(msg.toString());
             }
         });
 
@@ -84,7 +92,7 @@ public class MainChatFrame extends JFrame {
         usersList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                inputArea.setText("d:"+ usersList.getSelectedValue() + "@");
+                inputArea.setText(usersList.getSelectedValue() + "#");
             }
         });
     }

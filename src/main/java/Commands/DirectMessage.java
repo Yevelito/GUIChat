@@ -11,7 +11,7 @@ public class DirectMessage extends Command {
     Handlers handlers;
 
     public DirectMessage() {
-        this.shortname = "d";
+        this.shortname = "directMessage";
         this.handlers = Handlers.getInstance();
     }
 
@@ -24,7 +24,7 @@ public class DirectMessage extends Command {
     @Override
     public void action(String msg, ClientObject clientObject) {
         System.out.println(msg);
-        String[] txt = msg.split("@");
+        String[] txt = msg.split("#");
         System.out.println(txt[0]);
         System.out.println(txt[1]);
         ClientHandler receiver = this.handlers.getHandlers().get(txt[0]);

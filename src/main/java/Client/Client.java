@@ -1,6 +1,7 @@
 package Client;
 
 import Frames.MainChatFrame;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,6 +16,7 @@ public class Client {
     private Socket socket;
     private BufferedWriter bufferedWriter;
     private BufferedReader bufferedReader;
+
     private String username;
     private boolean auth;
     private MainChatFrame mcf;
@@ -32,7 +34,6 @@ public class Client {
             this.username = null;
             this.auth = false;
             this.listenerForMessage();
-
         } catch (IOException e) {
             closeEverything(socket, bufferedWriter, bufferedReader);
         }
@@ -45,7 +46,10 @@ public class Client {
      */
     public void setUsername(String username) {
         this.username = username;
-        sendMessageForm("u:" + this.username);
+        JSONObject msg = new JSONObject();
+        msg.put("commandName", "setUsername");
+        msg.put("message", username);
+        sendMessageForm(msg.toString());
     }
 
 

@@ -11,7 +11,7 @@ public class ShowAllUsers extends Command {
 
     public ShowAllUsers() {
         super();
-        this.shortname = "a";
+        this.shortname = "showOnlineUsers";
         this.handlers = Handlers.getInstance();
     }
 
