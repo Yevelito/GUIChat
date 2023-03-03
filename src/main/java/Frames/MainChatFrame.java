@@ -58,7 +58,7 @@ public class MainChatFrame extends JFrame {
 
 
         /**
-         * Send message to the client, and clear inputArea
+         * Send message to the client via JSONObject, and clear inputArea
          */
         sentButton.addActionListener(new ActionListener() {
             @Override
@@ -73,7 +73,7 @@ public class MainChatFrame extends JFrame {
 
 
         /**
-         * Refresh online users list by sending ShowAllUsers command ("a:1").
+         * Refresh online users list by sending ShowAllUsers command via JSONObject.
          */
         uplOnline.addActionListener(new ActionListener() {
             @Override
@@ -87,7 +87,7 @@ public class MainChatFrame extends JFrame {
         });
 
         /**
-         * Set start of direct message command ("d:username@") when click on username from list of online users
+         * Set start of direct message command ("username#") when click on username from list of online users
          */
         usersList.addListSelectionListener(new ListSelectionListener() {
             @Override

@@ -16,7 +16,6 @@ public class Client {
     private Socket socket;
     private BufferedWriter bufferedWriter;
     private BufferedReader bufferedReader;
-
     private String username;
     private boolean auth;
     private MainChatFrame mcf;
@@ -41,7 +40,7 @@ public class Client {
 
     /**
      * Set username to the client instance.
-     * Set username to the clientHandler by SetClientHandlerUsername command (shortname: "u").
+     * Set username to the clientHandler by SetClientHandlerUsername command via JSONObject.
      * @param username - username to set.
      */
     public void setUsername(String username) {

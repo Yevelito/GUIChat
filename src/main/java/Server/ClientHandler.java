@@ -133,9 +133,11 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * Split received message by ":" and check if it's specialized command (by command shortname) or broadcast message command.
+     * Convert received string to JSONObject,
+     * check if "message" value contains '#' symbol,
+     * and turn command to DirectMessage command if yes.
      *
-     * @param msgFromClient message received from Client
+     * @param msgFromClient JSONObject converted to string. Came from Client.
      */
     public void purposeAction(String msgFromClient) {
         JSONObject msg = new JSONObject(msgFromClient);

@@ -137,17 +137,17 @@ public class AuthorizationFrame extends JFrame implements ActionListener {
      * 3 options of user choice:
      * loginButton:
      * 1 - check if text in fields is not default.
-     * 2 - set username to clientHandler by SetClientHandlerUsername command (shortname "u").
-     * 3 - check if login and password are correct by Password command (shortname "p").
+     * 2 - set username to clientHandler by SetClientHandlerUsername command via JSONObject.
+     * 3 - check if login and password are correct by Password command via JSONObject.
      * <p>
      * registrationButton:
      * 1 - check if text in fields is not default.
      * 2 - append username, password and email to one string with "|" symbol.
-     * 3 - send AddUser command (shortname "c") to clientHandler
+     * 3 - send AddUser command to clientHandler via JSONObject
      * <p>
      * emailRecoverButton:
      * 1 - check if text in fields is not default.
-     * 2 - send Email command (shortname "e") for password recovery via gmail
+     * 2 - send Email command via JSONObject for password recovery via gmail
      *
      * @param e the event to be processed
      */
