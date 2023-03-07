@@ -23,6 +23,7 @@ public class Client {
     /**
      * Client constructor.
      * Receive socket, and create BufferedReader and BufferedWriter based on I/O streams.
+     *
      * @param s - socket
      */
     public Client(Socket s) {
@@ -41,6 +42,7 @@ public class Client {
     /**
      * Set username to the client instance.
      * Set username to the clientHandler by SetClientHandlerUsername command via JSONObject.
+     *
      * @param username - username to set.
      */
     public void setUsername(String username) {
@@ -54,6 +56,7 @@ public class Client {
 
     /**
      * Add line to chatOutputFrame in mainChatFrame.
+     *
      * @param msg - message to add.
      */
     public void addOutputLine(String msg) {
@@ -83,6 +86,7 @@ public class Client {
 
     /**
      * Send message to client handler.
+     *
      * @param msgToSend - message to send
      */
     public void sendMessageForm(String msgToSend) {
@@ -140,8 +144,10 @@ public class Client {
                                 mcf.refreshOnlineUsers(users);
                             } else {
                                 if (messageFromHandler.equals("a:")) {
-                                    addOutputLine("Only you in chat");
-                                } else {
+                                    String[] users = new String[1];
+                                    users[0] = "null";
+                                    mcf.refreshOnlineUsers(users);
+                                }else{
                                     addOutputLine(messageFromHandler);
                                 }
                             }
@@ -160,6 +166,7 @@ public class Client {
 
     /**
      * Close all connections.
+     *
      * @param socket
      * @param bufferedWriter
      * @param bufferedReader

@@ -29,16 +29,6 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="9ca71" class="javax.swing.JButton" binding="uplOnline">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <background color="-1"/>
-              <foreground color="-16777216"/>
-              <text value="Users online upd"/>
-            </properties>
-          </component>
           <component id="f720" class="javax.swing.JList" binding="usersList">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -52,6 +42,14 @@
               <selectionBackground color="-7368044"/>
               <selectionForeground color="-1114625"/>
               <selectionMode value="0"/>
+            </properties>
+          </component>
+          <component id="c4386" class="javax.swing.JLabel" binding="onlineUsersLable">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Users onlinie:"/>
             </properties>
           </component>
         </children>

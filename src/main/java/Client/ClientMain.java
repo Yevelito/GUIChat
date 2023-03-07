@@ -2,9 +2,12 @@ package Client;
 
 import Frames.AuthorizationFrame;
 import Frames.MainChatFrame;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.Socket;
+
+import static java.lang.Thread.sleep;
 
 /**
  * ClientMain Class.
@@ -53,7 +56,7 @@ public class ClientMain {
         System.out.println("INFO: waiting for authorization...");
         while (!this.client.isAuth()) {
             try {
-                Thread.sleep(100);
+                sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -63,6 +66,28 @@ public class ClientMain {
         this.authorizationFrame.dispose();
         this.mainChatFrame.setTitle("Chat client for '" + this.client.getUsername() + "' is on-line");
         this.mainChatFrame.setVisible(true);
+
+        /**
+         * Starts auto refresh for users online list
+         */
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONObject msg = new JSONObject();
+                msg.put("commandName", "showOnlineUsers");
+                msg.put("message", "");
+                while (client.isAuth()){
+                    try {
+                        client.sendMessageForm(msg.toString());
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        System.out.println(e);
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }).start();
     }
 }
 
