@@ -30,8 +30,8 @@ public class Server {
             this.mySQLOperator = new MySQLOperator();
             this.mySQLOperator.DropTableMessages();
             this.mySQLOperator.CreateTableMessages();
-//          this.mySQLOperator.DropTableUsers();
-//          this.mySQLOperator.CreateTableUsers();
+          this.mySQLOperator.DropTableUsers();
+          this.mySQLOperator.CreateTableUsers();
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }

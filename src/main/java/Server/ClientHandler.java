@@ -1,6 +1,7 @@
 package Server;
 
 import Commands.ClientObject;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,13 +12,13 @@ import java.util.ArrayList;
  * Made when client have connection to te server.
  * Responsible for all logic part of application.
  * Contains:
- *  Handlers list instance,
- *  Commands list instance,
- *  Socket
- *  Buffer reader and writer
- *  Username
- *  MySQL operator instance
- *  Client object
+ * Handlers list instance,
+ * Commands list instance,
+ * Socket
+ * Buffer reader and writer
+ * Username
+ * MySQL operator instance
+ * Client object
  */
 public class ClientHandler implements Runnable {
     private Handlers handlers;
@@ -34,8 +35,9 @@ public class ClientHandler implements Runnable {
      * Receive from server socket and MySQL operator.
      * Create Buffered reader and writer based on socket connection.
      * Get handlers list instance and CommandsLibrary instance.
+     *
      * @param socket socket
-     * @param sql MySQL operator instance
+     * @param sql    MySQL operator instance
      * @throws SQLException
      */
     public ClientHandler(Socket socket, MySQLOperator sql) throws SQLException {
@@ -62,14 +64,14 @@ public class ClientHandler implements Runnable {
     /**
      * Main logic of project.
      * Consist of 2 steps:
-     *  1 - AUTHORIZATION:
-     *          wait till clientObject "isAuthorized" status will be true,
-     *          and when send "SERVER: authorization successful" message to the Client for their authorization,
-     *          and broadcast message to the chat about it.
-     *          Add this ClientHandler to Handlers list.
-     *          Set online status "1" in 'users' table (DB).
-     *  2 - CHAT RUNNING:
-     *          receive messages from Client till "isOnline" status in clientObject is true
+     * 1 - AUTHORIZATION:
+     * wait till clientObject "isAuthorized" status will be true,
+     * and when send "SERVER: authorization successful" message to the Client for their authorization,
+     * and broadcast message to the chat about it.
+     * Add this ClientHandler to Handlers list.
+     * Set online status "1" in 'users' table (DB).
+     * 2 - CHAT RUNNING:
+     * receive messages from Client till "isOnline" status in clientObject is true
      */
     @Override
     public void run() {
@@ -81,13 +83,15 @@ public class ClientHandler implements Runnable {
             while (!this.clientObject.isAuthorized()) {
                 msgFromClient = bufferedReader.readLine();
                 System.out.println(threadName + "DEBUG: msg from client: " + msgFromClient);
+                System.out.println(threadName + "DEBUG: clientObject auth status: " + this.clientObject.isAuthorized());
                 purposeAction(msgFromClient);
+
 
                 if (this.clientObject.isAuthorized()) {
                     setUsername(this.clientObject.getUsername());
                     System.out.println(threadName + "INFO: client was authorized successfully");
                     msgToClient("SERVER: authorization successful");
-                    commandsLibrary.commands.get("b").action("Hi, everyone! Happy join to the chat", this.clientObject);
+                    commandsLibrary.commands.get("broadcastMessage").action("Hi, everyone! Happy join to the chat", this.clientObject);
                     this.handlers.addHandler(this.clientObject.getUsername(), this);
                     this.clientObject.getMysqlConnection().setOnlineStatus(this.clientObject.getUsername(), true);
                     printAllMessages();
@@ -112,7 +116,6 @@ public class ClientHandler implements Runnable {
          */
         try {
             while (this.clientObject.isOnline()) {
-
                 msgFromClient = bufferedReader.readLine();
                 purposeAction(msgFromClient);
             }
@@ -130,16 +133,19 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * Split received message by ":" and check if it's specialized command (by command shortname) or broadcast message command.
-     * @param msgFromClient message received from Client
+     * Convert received string to JSONObject,
+     * check if "message" value contains '#' symbol,
+     * and turn command to DirectMessage command if yes.
+     *
+     * @param msgFromClient JSONObject converted to string. Came from Client.
      */
     public void purposeAction(String msgFromClient) {
-        String[] msg = msgFromClient.split(":");
-        if (msg.length > 1) {
-            this.commandsLibrary.getCommands().get(msg[0]).action(msg[1], this.clientObject);
-        } else {
-            this.commandsLibrary.getCommands().get("b").action(msg[0], this.clientObject);
+        JSONObject msg = new JSONObject(msgFromClient);
+        if (msg.get("message").toString().contains("#")) {
+            msg.put("commandName", "directMessage");
         }
+        this.commandsLibrary.getCommands().get(msg.get("commandName").toString())
+                .action(msg.get("message").toString(), this.clientObject);
     }
 
     public String getUsername() {
@@ -179,7 +185,7 @@ public class ClientHandler implements Runnable {
 
     public void removeClientHandler() throws SQLException {
         if (this.clientObject.isAuthorized()) {
-            commandsLibrary.commands.get("b").action(" Bye, everyone! I left the chat.", this.clientObject);
+            commandsLibrary.commands.get("broadcastMessage").action("Bye, everyone! I left the chat.", this.clientObject);
             this.clientObject.setOnline(false);
             this.clientObject.setAuthorized(false);
             this.clientObject.getMysqlConnection().setOnlineStatus(this.clientObject.getUsername(), false);

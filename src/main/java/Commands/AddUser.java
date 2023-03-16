@@ -6,7 +6,7 @@ package Commands;
  */
 public class AddUser extends Command {
 
-    public AddUser() {this.shortname = "c";}
+    public AddUser() {this.shortname = "addNewUser";}
 
     /**
      * Add user method.

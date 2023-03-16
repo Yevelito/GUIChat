@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class Email extends Command {
     public Email() {
         super();
-        this.shortname = "e";
+        this.shortname = "recoveryPasswordViaEmail";
     }
 
     /**
@@ -24,7 +24,6 @@ public class Email extends Command {
     public void action(String msg, ClientObject clientObject) {
         try {
             new EmailSender().sendEmail(msg, clientObject.getMysqlConnection().getPasswordByLoginAndEmail(clientObject.getUsername(), msg));
-            System.out.println("Commands.Email sent");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

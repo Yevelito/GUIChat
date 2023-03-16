@@ -6,7 +6,7 @@ package Commands;
 public class SetClientHandlerUsername extends Command{
 
     public SetClientHandlerUsername() {
-        this.shortname = "u";
+        this.shortname = "setUsername";
     }
 
     @Override

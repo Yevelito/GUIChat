@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Password extends Command {
 
     public Password() {
-        this.shortname = "p";
+        this.shortname = "passwordCheck";
     }
 
     /**
@@ -23,7 +23,9 @@ public class Password extends Command {
             if (!clientObject.getMysqlConnection().getOnlineStatus(clientObject.getUsername())) {
                 boolean passwordOK = clientObject.getMysqlConnection().checkIfPasswordAndLoginCorrect(clientObject.getUsername(), password);
                 if (passwordOK && !clientObject.isAuthorized()) {
+                    System.out.println("DEBUG: clientObject auth status is: " + clientObject.isAuthorized());
                     clientObject.setAuthorized(true);
+                    System.out.println("DEBUG: clientObject auth status is: " + clientObject.isAuthorized());
                 }
             }
         } catch (SQLException e) {
