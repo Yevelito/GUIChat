@@ -21,7 +21,7 @@ public class EmailSender {
         String to = email;
 
         // Sender's email ID needs to be mentioned
-        String from = "evelrap@gmail.com";
+        String from = System.getenv("EMAIL");
 
         // Assuming you are sending email from through gmails smtp
         String host = "smtp.gmail.com";
@@ -40,7 +40,7 @@ public class EmailSender {
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication(from, "hzbovwbtnnoagyry");
+                return new PasswordAuthentication(from, System.getenv("EMAIL_PASSWORD"));
 
             }
 

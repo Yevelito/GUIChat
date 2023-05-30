@@ -7,11 +7,10 @@ import java.sql.SQLException;
 
 /**
  * Server.
- * Connection made by port 1234.
  * Contains: MySQL operator, socket and list of handlers.
  */
 public class Server {
-    private final int serverPort = 1234;
+    private final int serverPort = Integer.parseInt(System.getenv("SERVERPORT"));
     ServerSocket serverSocket;
     MySQLOperator mySQLOperator;
     Handlers handlers;

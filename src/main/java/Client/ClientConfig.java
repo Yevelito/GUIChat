@@ -14,8 +14,10 @@ public class ClientConfig {
 
     public ClientConfig() {
         data = new HashMap<>();
-        data.put("serverAddress", "127.0.0.1");
-        data.put("serverPort", "1234");
+        data.put("serverAddress", System.getenv("SERVERADDRES"));
+//        data.put("serverAddress", "127.0.0.1");
+        data.put("serverPort", System.getenv("SERVERPORT"));
+//        data.put("serverPort", "1234");
     }
 
     private static ClientConfig instance = null;

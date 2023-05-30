@@ -19,9 +19,9 @@ public class MySQLOperator {
      * Connection to localhost chat database 'chat_base'.
      */
     public MySQLOperator() {
-        this.SERVERHOST = "jdbc:mysql://localhost:3306/chat_base";
-        this.USER = "root";
-        this.PASSWORD = "Password12321!!";
+        this.SERVERHOST = System.getenv("DBHOST");
+        this.USER = System.getenv("USER");
+        this.PASSWORD = System.getenv("DBPASSWORD");
         this.id = 0;
         try {
 
