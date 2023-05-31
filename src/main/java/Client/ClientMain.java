@@ -27,8 +27,8 @@ public class ClientMain {
      */
     public ClientMain() {
         try {
-            String serverHost = ClientConfig.getInstance().data.get("serverAddress");
-            int serverPort = Integer.parseInt(ClientConfig.getInstance().data.get("serverPort"));
+            String serverHost = ClientConfig.getInstance().data.get("SERVERHOST");
+            final int serverPort = Integer.parseInt(System.getenv("SERVERPORT"));
 
             System.out.println("INFO: Connecting to server " + serverHost + ":" + serverPort);
             this.serverSocket = new Socket(serverHost, serverPort);

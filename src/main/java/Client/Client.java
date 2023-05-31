@@ -113,7 +113,6 @@ public class Client {
                 while (!isAuth()) {
                     try {
                         messageFromHandler = bufferedReader.readLine();
-                        System.out.println("DEBUG: message from server(no auth): " + messageFromHandler);
                         if (messageFromHandler.equals("SERVER: authorization successful")) {
                             setAuth(true);
                         }

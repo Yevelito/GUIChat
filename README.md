@@ -21,7 +21,7 @@ You can see all online users on right part of the window.
 
 With click on user name you can send a private message:
 
-![rpvate message frame](screeshots/private_message_frame.png)
+![private message screen](screeshots/private_message_screen.png)
 
 <h3>Technologies:</h3>
  - java core with sockets;
